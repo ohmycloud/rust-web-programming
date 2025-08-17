@@ -1,6 +1,7 @@
 use super::super::enums::TaskStatus;
 use super::base::Base;
 
+#[derive(Debug)]
 pub struct Done {
     pub super_struct: Base,
 }
