@@ -1,3 +1,4 @@
+mod api;
 use actix_web::{App, HttpRequest, HttpServer, Responder, web};
 
 async fn greet(req: HttpRequest) -> impl Responder {
