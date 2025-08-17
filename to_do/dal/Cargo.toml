@@ -1,0 +1,11 @@
+[package]
+name = "dal"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+json-file = ["serde_json", "serde"]
+
+[dependencies]
+serde = { version = "1.0.219", optional = true }
+serde_json = { version = "1.0.142", optional = true }

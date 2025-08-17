@@ -1,4 +1,4 @@
 [workspace]
 resolver = "2"
 
-members = ["to_do/core"]
+members = ["to_do/core", "to_do/dal"]
