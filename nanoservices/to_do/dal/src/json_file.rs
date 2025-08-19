@@ -22,6 +22,23 @@ fn get_handle() -> Result<File, NanoServiceError> {
     Ok(file)
 }
 
+fn get_write_handle() -> Result<File, NanoServiceError> {
+    let file_path = env::var("JSON_STORE_PATH").unwrap_or("./tasks.json".to_string());
+
+    let file = safe_eject!(
+        OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&file_path),
+        NanoServiceErrorStatus::Unknown,
+        "Error reading JSON file (write handle)"
+    )?;
+
+    Ok(file)
+}
+
 // reading json file and returning all the results.
 pub fn get_all<T: DeserializeOwned>() -> Result<HashMap<String, T>, NanoServiceError> {
     let mut file = get_handle()?;
@@ -44,7 +61,7 @@ pub fn get_all<T: DeserializeOwned>() -> Result<HashMap<String, T>, NanoServiceE
 
 // save all the tasks to json file
 pub fn save_all<T: Serialize>(tasks: &HashMap<String, T>) -> Result<(), NanoServiceError> {
-    let mut file = get_handle()?;
+    let mut file = get_write_handle()?;
     let json = safe_eject!(
         serde_json::to_string_pretty(tasks),
         NanoServiceErrorStatus::Unknown,
@@ -86,6 +103,14 @@ where
     T: Serialize + DeserializeOwned + Clone,
 {
     let mut tasks = get_all::<T>().unwrap_or_else(|_| HashMap::new());
-    tasks.remove(id);
-    save_all(&tasks)
+    match tasks.remove(id) {
+        Some(_) => {
+            save_all(&tasks)?;
+            Ok(())
+        }
+        None => Err(NanoServiceError::new(
+            format!("Task with title {} not found", id),
+            NanoServiceErrorStatus::NotFound,
+        )),
+    }
 }

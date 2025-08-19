@@ -5,10 +5,6 @@
   },
   "washing": {
     "title": "washing",
-    "status": "PENDING"
-  },
-  "coding": {
-    "title": "coding",
     "status": "DONE"
   }
 }

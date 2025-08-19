@@ -17,3 +17,7 @@ Content-Type: application/json
   "title": "writing",
   "status": "test"
 }
+
+### delete a todo item
+
+DELETE http://127.0.0.1:8080/api/v1/delete/coding
