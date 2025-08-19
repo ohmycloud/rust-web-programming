@@ -4,7 +4,7 @@ POST http://127.0.0.1:8080/api/v1/create
 Content-Type: application/json
 
 {
-  "title": "writing",
+  "title": "washing",
   "status": "PENDING"
 }
 
@@ -21,3 +21,13 @@ Content-Type: application/json
 ### delete a todo item
 
 DELETE http://127.0.0.1:8080/api/v1/delete/coding
+
+### update a todo item
+
+PUT http://127.0.0.1:8080/api/v1/update
+Content-Type: application/json
+
+{
+  "title": "washing",
+  "status": "DONE"
+}
