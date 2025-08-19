@@ -5,6 +5,21 @@ use thiserror::Error;
 #[cfg(feature = "actix")]
 use actix_web::{HttpResponse, error::ResponseError, http::StatusCode};
 
+#[macro_export]
+macro_rules! safe_eject {
+    ($e:expr, $err_status:expr) => {
+        $e.map_err(|x| NanoServiceError::new(x.to_string(), $err_status))
+    };
+    ($e:expr, $err_status:expr, $message_context:expr) => {
+        $e.map_err(|x| {
+            NanoServiceError::new(
+                format!("{}: {}", $message_context, x.to_string()),
+                $err_status,
+            )
+        })
+    };
+}
+
 #[derive(Debug, Error, Serialize, Deserialize, PartialEq)]
 pub enum NanoServiceErrorStatus {
     #[error("Requested resource was not found.")]
