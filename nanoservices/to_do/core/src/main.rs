@@ -18,7 +18,5 @@ struct Args {
 fn main() -> Result<(), String> {
     let args = Args::parse();
     let status_enum = TaskStatus::from_string(&args.status)?;
-    let todo_item = create(&args.title, status_enum);
-    println!("Created todo item: {:?}", todo_item);
     Ok(())
 }
