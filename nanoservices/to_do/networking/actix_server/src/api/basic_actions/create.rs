@@ -1,8 +1,8 @@
-use core::structs::ToDoItem;
+use todo_core::structs::ToDoItem;
 
 use actix_web::{HttpResponse, web::Json};
-use core::api::basic_actions::{create::create as create_core, get::get_all as get_all_core};
 use glue::{errors::NanoServiceError, token::HeaderToken};
+use todo_core::api::basic_actions::{create::create as create_core, get::get_all as get_all_core};
 
 pub async fn create(
     token: HeaderToken,

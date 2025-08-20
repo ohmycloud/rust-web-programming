@@ -1,4 +1,4 @@
-use core::api::basic_actions::{delete::delete as delete_core, get::get_all as get_all_core};
+use todo_core::api::basic_actions::{delete::delete as delete_core, get::get_all as get_all_core};
 
 use actix_web::{HttpRequest, HttpResponse};
 use glue::errors::{NanoServiceError, NanoServiceErrorStatus};

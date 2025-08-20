@@ -1,4 +1,4 @@
-use core::{
+use todo_core::{
     api::basic_actions::{get::get_all as get_all_core, update::update as update_core},
     structs::ToDoItem,
 };

@@ -1,5 +1,5 @@
 mod api;
-use actix_web::{App, HttpRequest, HttpServer, Responder, web};
+use actix_web::{App, HttpServer};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
