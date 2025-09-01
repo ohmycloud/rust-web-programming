@@ -1,7 +1,15 @@
 {
+  "Rakudo": {
+    "title": "Rakudo",
+    "status": "DONE"
+  },
   "writing": {
     "title": "writing",
     "status": "DONE"
+  },
+  "ohmycloudy": {
+    "title": "ohmycloudy",
+    "status": "PENDING"
   },
   "washing": {
     "title": "washing",
