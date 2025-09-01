@@ -23,9 +23,7 @@ const App = () => {
 
   return (
     <div>
-      {error ? (
-        <div style={{ color: "red" }}>Error: {error}</div> // Display error if present
-      ) : data ? (
+      {data ? (
         <div>Data loaded: {JSON.stringify(data)}</div>
       ) : (
         <div>Loading...</div>
