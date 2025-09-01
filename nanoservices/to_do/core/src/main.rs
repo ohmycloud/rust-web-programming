@@ -3,7 +3,6 @@ mod enums;
 mod structs;
 
 use crate::enums::TaskStatus;
-use api::basic_actions::create::create;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
