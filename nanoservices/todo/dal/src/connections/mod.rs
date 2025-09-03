@@ -1,1 +1,2 @@
-mod sqlx_postgres;
+#[cfg(feature = "sqlx-postgres")]
+pub mod sqlx_postgres;
