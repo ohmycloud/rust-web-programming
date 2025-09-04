@@ -1,4 +1,4 @@
-mod descriptors;
-mod enums;
-mod schema;
-mod transactions;
+pub mod descriptors;
+pub mod enums;
+pub mod schema;
+pub mod transactions;
