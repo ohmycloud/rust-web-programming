@@ -53,6 +53,7 @@ async fn sqlx_postgres_save_one(item: NewToDoItem) -> Result<ToDoItem, NanoServi
     Ok(item)
 }
 
+// #[cfg(feature = "json-file")]
 async fn json_file_save_one(item: NewToDoItem) -> Result<ToDoItem, NanoServiceError> {
     let mut tasks = get_all::<ToDoItem>().unwrap_or_else(|_| HashMap::new());
     let todo_item = ToDoItem {
