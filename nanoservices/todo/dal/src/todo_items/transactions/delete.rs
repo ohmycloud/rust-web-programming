@@ -1,12 +1,13 @@
-use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
-
 use crate::{
     connections::sqlx_postgres::SQLX_POSTGRES_POOL,
+    json_file::{get_all, save_all},
     todo_items::{
         descriptors::{JsonFileDescriptor, SqlxPostGresDescriptor},
         schema::ToDoItem,
     },
 };
+use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
+use std::collections::HashMap;
 
 pub trait DeleteOne {
     async fn delete_one(
@@ -43,10 +44,6 @@ async fn sqlx_postgres_delete_one(title: String) -> Result<ToDoItem, NanoService
 
 #[cfg(feature = "json-file")]
 async fn json_file_delete_one(title: String) -> Result<ToDoItem, NanoServiceError> {
-    use std::collections::HashMap;
-
-    use crate::json_file::{get_all, save_all};
-
     let mut tasks = get_all::<ToDoItem>().unwrap_or_else(|_| HashMap::new());
     let todo_item = tasks.remove(&title).ok_or_else(|| {
         NanoServiceError::new(
