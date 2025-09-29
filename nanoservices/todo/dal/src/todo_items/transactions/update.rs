@@ -1,12 +1,16 @@
-use crate::{
-    connections::sqlx_postgres::SQLX_POSTGRES_POOL,
-    json_file::{get_all, save_all},
-    todo_items::{
-        descriptors::{JsonFileDescriptor, SqlxPostGresDescriptor},
-        schema::ToDoItem,
-    },
-};
-use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
+#[cfg(feature = "sqlx-postgres")]
+use crate::connections::sqlx_postgres::SQLX_POSTGRES_POOL;
+#[cfg(feature = "json-file")]
+use crate::json_file::{get_all, save_all};
+#[cfg(feature = "json-file")]
+use crate::todo_items::descriptors::JsonFileDescriptor;
+#[cfg(feature = "sqlx-postgres")]
+use crate::todo_items::descriptors::SqlxPostGresDescriptor;
+
+use crate::todo_items::schema::ToDoItem;
+#[cfg(any(feature = "json-file", feature = "sqlx-postgres"))]
+use glue::errors::NanoServiceError;
+use glue::errors::NanoServiceErrorStatus;
 use std::collections::HashMap;
 
 pub trait UpdateOne {
@@ -15,6 +19,7 @@ pub trait UpdateOne {
     ) -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send;
 }
 
+#[cfg(feature = "sqlx-postgres")]
 impl UpdateOne for SqlxPostGresDescriptor {
     fn update_one(
         item: ToDoItem,
@@ -23,6 +28,7 @@ impl UpdateOne for SqlxPostGresDescriptor {
     }
 }
 
+#[cfg(feature = "json-file")]
 impl UpdateOne for JsonFileDescriptor {
     fn update_one(
         item: ToDoItem,
@@ -31,7 +37,7 @@ impl UpdateOne for JsonFileDescriptor {
     }
 }
 
-// #[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres")]
 async fn sqlx_postgres_update_one(item: ToDoItem) -> Result<ToDoItem, NanoServiceError> {
     let item = sqlx::query_as::<_, ToDoItem>(
         "UPDATE todo_items set title = $1, status = $2 WHERE id = $3 RETURNING *",

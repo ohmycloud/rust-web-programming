@@ -1,12 +1,15 @@
-use crate::{
-    connections::sqlx_postgres::SQLX_POSTGRES_POOL,
-    json_file::{get_all, save_all},
-    todo_items::{
-        descriptors::{JsonFileDescriptor, SqlxPostGresDescriptor},
-        schema::ToDoItem,
-    },
-};
-use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
+#[cfg(feature = "sqlx-postgres")]
+use crate::connections::sqlx_postgres::SQLX_POSTGRES_POOL;
+#[cfg(feature = "json-file")]
+use crate::json_file::{get_all, save_all};
+#[cfg(feature = "json-file")]
+use crate::todo_items::descriptors::JsonFileDescriptor;
+#[cfg(feature = "sqlx-postgres")]
+use crate::todo_items::descriptors::SqlxPostGresDescriptor;
+use crate::todo_items::schema::ToDoItem;
+use glue::errors::NanoServiceError;
+#[cfg(any(feature = "json-file", feature = "sqlx-postgres"))]
+use glue::errors::NanoServiceErrorStatus;
 use std::collections::HashMap;
 
 pub trait DeleteOne {
@@ -14,6 +17,7 @@ pub trait DeleteOne {
     -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send;
 }
 
+#[cfg(feature = "sqlx-postgres")]
 impl DeleteOne for SqlxPostGresDescriptor {
     fn delete_one(
         title: String,
@@ -22,6 +26,7 @@ impl DeleteOne for SqlxPostGresDescriptor {
     }
 }
 
+#[cfg(feature = "json-file")]
 impl DeleteOne for JsonFileDescriptor {
     fn delete_one(
         title: String,
@@ -30,7 +35,7 @@ impl DeleteOne for JsonFileDescriptor {
     }
 }
 
-// #[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres")]
 async fn sqlx_postgres_delete_one(title: String) -> Result<ToDoItem, NanoServiceError> {
     let item = sqlx::query_as::<_, ToDoItem>("DELETE FROM todo_items WHERE title = $1 RETURNING *")
         .bind(title)

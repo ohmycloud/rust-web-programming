@@ -1,15 +1,16 @@
+#[cfg(feature = "sqlx-postgres")]
+use crate::connections::sqlx_postgres::SQLX_POSTGRES_POOL;
+#[cfg(feature = "json-file")]
+use crate::json_file::get_all;
+#[cfg(feature = "json-file")]
+use crate::todo_items::descriptors::JsonFileDescriptor;
+#[cfg(feature = "sqlx-postgres")]
+use crate::todo_items::descriptors::SqlxPostGresDescriptor;
+use crate::todo_items::schema::ToDoItem;
+use glue::errors::NanoServiceError;
+#[cfg(feature = "sqlx-postgres")]
+use glue::errors::NanoServiceErrorStatus;
 use std::collections::HashMap;
-
-use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
-
-use crate::{
-    connections::sqlx_postgres::SQLX_POSTGRES_POOL,
-    json_file::get_all,
-    todo_items::{
-        descriptors::{JsonFileDescriptor, SqlxPostGresDescriptor},
-        schema::ToDoItem,
-    },
-};
 
 pub trait GetAll {
     fn get_all() -> impl Future<Output = Result<Vec<ToDoItem>, NanoServiceError>> + Send;
@@ -21,7 +22,7 @@ impl GetAll for SqlxPostGresDescriptor {
     }
 }
 
-// #[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres")]
 async fn sqlx_postgres_get_all() -> Result<Vec<ToDoItem>, NanoServiceError> {
     let items = sqlx::query_as("SELECT * from todo_items")
         .fetch_all(&*SQLX_POSTGRES_POOL)
