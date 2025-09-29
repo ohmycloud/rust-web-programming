@@ -1084,6 +1084,7 @@ dependencies = [
  "mime_guess",
  "rust-embed",
  "todo-actix-server",
+ "todo-dal",
  "tokio",
 ]
 

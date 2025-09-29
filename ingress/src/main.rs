@@ -2,6 +2,7 @@ use actix_cors::Cors;
 use actix_web::{App, HttpRequest, HttpResponse, HttpServer, Responder, web};
 use rust_embed::RustEmbed;
 use std::path::Path;
+use todo_dal::migrations::run_migrations as run_todo_migrations;
 use todo_server::api::views_factory as todo_views_factory;
 
 async fn index() -> HttpResponse {
@@ -51,6 +52,10 @@ async fn catch_all(req: HttpRequest) -> impl Responder {
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    run_todo_migrations()
+        .await
+        .expect("todo database migration failed");
+
     HttpServer::new(|| {
         let cors = Cors::default()
             .allow_any_origin()

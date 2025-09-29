@@ -10,3 +10,4 @@ mime_guess = "2.0.5"
 rust-embed = "8.7.2"
 tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
 todo-server = { path = "../nanoservices/todo/networking/actix_server", package = "todo-actix-server" }
+todo-dal = { path = "../nanoservices/todo/dal", package = "todo-dal", features = ["sqlx-postgres"] }
