@@ -10,13 +10,12 @@ use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
 use std::collections::HashMap;
 
 pub trait DeleteOne {
-    async fn delete_one(
-        title: String,
-    ) -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send;
+    fn delete_one(title: String)
+    -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send;
 }
 
 impl DeleteOne for SqlxPostGresDescriptor {
-    async fn delete_one(
+    fn delete_one(
         title: String,
     ) -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send {
         sqlx_postgres_delete_one(title)
@@ -24,7 +23,7 @@ impl DeleteOne for SqlxPostGresDescriptor {
 }
 
 impl DeleteOne for JsonFileDescriptor {
-    async fn delete_one(
+    fn delete_one(
         title: String,
     ) -> impl Future<Output = Result<ToDoItem, NanoServiceError>> + Send {
         json_file_delete_one(title)

@@ -8,3 +8,4 @@ actix-web = "4.11.0"
 tokio = { version = "1.47.1", features = ["full"] }
 todo-core = { path = "../../core" }
 glue = { path = "../../../../glue", features = ["actix"] }
+todo-dal = { path = "../../dal", features = ["sqlx-postgres"] }

@@ -1,8 +1,7 @@
 use glue::errors::NanoServiceError;
-use todo_dal::json_file::delete_one;
+use todo_dal::todo_items::transactions::delete::DeleteOne;
 
-use crate::structs::ToDoItem;
-
-pub async fn delete(id: &str) -> Result<(), NanoServiceError> {
-    delete_one::<ToDoItem>(id)
+pub async fn delete<T: DeleteOne>(id: &str) -> Result<(), NanoServiceError> {
+    let _ = T::delete_one(id.to_string()).await?;
+    Ok(())
 }

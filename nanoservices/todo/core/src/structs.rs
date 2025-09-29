@@ -1,8 +1,9 @@
 use crate::enums::TaskStatus;
+use glue::errors::NanoServiceError;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ToDoItem {
     pub title: String,
     pub status: TaskStatus,

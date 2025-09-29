@@ -3,9 +3,11 @@ use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
 use todo_core::api::basic_actions::get::{
     get_all as get_all_core, get_by_name as get_by_name_core,
 };
+use todo_dal::todo_items::transactions::get::GetAll;
 
-pub async fn get_all() -> Result<HttpResponse, NanoServiceError> {
-    Ok(HttpResponse::Ok().json(get_all_core().await?))
+pub async fn get_all<T: GetAll>() -> Result<HttpResponse, NanoServiceError> {
+    let items = get_all_core::<T>().await?;
+    Ok(HttpResponse::Ok().json(items))
 }
 
 pub async fn get_by_name(req: HttpRequest) -> Result<HttpResponse, NanoServiceError> {

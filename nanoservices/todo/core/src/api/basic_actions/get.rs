@@ -1,10 +1,10 @@
-use crate::structs::{AllToDoItems, ToDoItem};
 use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
-use todo_dal::json_file::get_all as get_all_handle;
+use todo_dal::todo_items::schema::{AllToDoItems, ToDoItem};
+use todo_dal::{json_file::get_all as get_all_handle, todo_items::transactions::get::GetAll};
 
-pub async fn get_all() -> Result<AllToDoItems, NanoServiceError> {
-    let hashmap = get_all_handle::<ToDoItem>()?;
-    Ok(AllToDoItems::from_hashmap(hashmap))
+pub async fn get_all<T: GetAll>() -> Result<AllToDoItems, NanoServiceError> {
+    let all_items = T::get_all().await?;
+    AllToDoItems::from_vec(all_items)
 }
 
 pub async fn get_by_name(name: &str) -> Result<ToDoItem, NanoServiceError> {

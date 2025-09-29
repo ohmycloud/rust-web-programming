@@ -2113,6 +2113,7 @@ dependencies = [
  "actix-web",
  "glue",
  "todo-core",
+ "todo-dal",
  "tokio",
 ]
 
