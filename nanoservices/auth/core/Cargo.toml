@@ -1,0 +1,9 @@
+[package]
+name = "auth-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+auth-dal = { version = "0.1.0", path = "../dal" }
+glue = { version = "0.1.0", path = "../../../glue" }
+serde = { version = "1.0.228", features = ["derive"] }

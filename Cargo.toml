@@ -3,7 +3,7 @@ resolver = "2"
 
 members = [
     "glue",
-    "ingress",
+    "ingress", "nanoservices/auth/core", "nanoservices/auth/dal", "nanoservices/auth/networking/actix_server",
     "nanoservices/todo/core",
     "nanoservices/todo/dal",
     "nanoservices/todo/networking/actix_server",
