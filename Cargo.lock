@@ -203,6 +203,13 @@ dependencies = [
 [[package]]
 name = "actix_server"
 version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "auth-core",
+ "auth-dal",
+ "glue",
+ "tokio",
+]
 
 [[package]]
 name = "addr2line"

@@ -4,3 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+actix-web = "4.11.0"
+auth-core = { version = "0.1.0", path = "../../core" }
+auth-dal = { version = "0.1.0", path = "../../dal" }
+glue = { version = "0.1.0", path = "../../../../glue" }
+tokio = { version = "1.47.1", features = ["full"] }
