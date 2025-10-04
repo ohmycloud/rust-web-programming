@@ -1,5 +1,5 @@
 mod connections;
 mod migrations;
-mod users;
+pub mod users;
 
 pub use users::*;
