@@ -10,7 +10,7 @@ pub async fn create<T: SaveOne + GetAll>(
     token: HeaderToken,
     body: Json<NewToDoItem>,
 ) -> Result<HttpResponse, NanoServiceError> {
-    println!("Token: {}", token.message);
+    println!("Token: {}", token.unique_id);
     let _ = create_core::<T>(body.into_inner()).await?;
     Ok(HttpResponse::Created().json(get_all_core::<T>().await?))
 }

@@ -4,9 +4,48 @@ use crate::errors::{NanoServiceError, NanoServiceErrorStatus};
 use actix_web::{FromRequest, HttpRequest, dev::Payload};
 #[cfg(feature = "actix")]
 use futures::future::{Ready, err, ok};
+use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, Validation, decode, encode};
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HeaderToken {
-    pub message: String,
+    pub unique_id: String,
+}
+
+impl HeaderToken {
+    pub fn get_key() -> Result<String, NanoServiceError> {
+        std::env::var("JWT_SECRET").map_err(|err| {
+            NanoServiceError::new(err.to_string(), NanoServiceErrorStatus::Unauthorized)
+        })
+    }
+
+    pub fn encode(self) -> Result<String, NanoServiceError> {
+        let jwt_secret = Self::get_key()?;
+        let key = EncodingKey::from_secret(jwt_secret.as_ref());
+
+        return match encode(&Header::default(), &self, &key) {
+            Ok(token) => Ok(token),
+            Err(err) => Err(NanoServiceError::new(
+                err.to_string(),
+                NanoServiceErrorStatus::Unauthorized,
+            )),
+        };
+    }
+
+    pub fn decode(token: &str) -> Result<Self, NanoServiceError> {
+        let jwt_secret = Self::get_key()?;
+        let key = DecodingKey::from_secret(jwt_secret.as_ref());
+        let mut validation = Validation::new(Algorithm::HS256);
+        validation.required_spec_claims.remove("exp");
+
+        match decode::<Self>(token, &key, &validation) {
+            Ok(token) => Ok(token.claims),
+            Err(err) => Err(NanoServiceError::new(
+                err.to_string(),
+                NanoServiceErrorStatus::Unauthorized,
+            )),
+        }
+    }
 }
 
 impl FromRequest for HeaderToken {
@@ -33,6 +72,12 @@ impl FromRequest for HeaderToken {
                 ));
             }
         };
-        return ok(HeaderToken { message });
+
+        let token = match HeaderToken::decode(&message) {
+            Ok(token) => token,
+            Err(e) => return err(e),
+        };
+
+        return ok(token);
     }
 }
