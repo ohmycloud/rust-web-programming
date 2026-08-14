@@ -81,3 +81,8 @@ impl FromRequest for HeaderToken {
         return ok(token);
     }
 }
+
+pub fn get_key() -> Result<String, NanoServiceError> {
+    std::env::var("JWT_SECRET")
+        .map_err(|e| NanoServiceError::new(e.to_string(), NanoServiceErrorStatus::Unauthorized))
+}
