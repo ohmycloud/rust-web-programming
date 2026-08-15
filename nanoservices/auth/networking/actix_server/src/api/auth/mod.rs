@@ -1,4 +1,3 @@
-use actix_web::web::ServiceConfig;
 use actix_web::web::{ServiceConfig, get, scope};
 use auth_dal::users::SqlxPostGresDescriptor;
 
