@@ -9,3 +9,4 @@ auth-core = { version = "0.1.0", path = "../../core" }
 auth-dal = { version = "0.1.0", path = "../../dal" }
 glue = { version = "0.1.0", path = "../../../../glue" }
 tokio = { version = "1.47.1", features = ["full"] }
+base64 = "0.22.1"

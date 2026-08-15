@@ -207,6 +207,7 @@ dependencies = [
  "actix-web",
  "auth-core",
  "auth-dal",
+ "base64",
  "glue",
  "tokio",
 ]

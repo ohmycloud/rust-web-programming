@@ -1,6 +1,7 @@
 use actix_web::{App, HttpServer};
 
 mod api;
+mod extract_auth;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
